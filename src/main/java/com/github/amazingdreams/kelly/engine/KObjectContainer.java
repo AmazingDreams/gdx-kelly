@@ -1,16 +1,14 @@
 package com.github.amazingdreams.kelly.engine;
 
+import com.badlogic.gdx.utils.Array;
 import com.github.amazingdreams.kelly.framework.KObject;
-
-import java.util.ArrayList;
-import java.util.List;
 
 public class KObjectContainer {
 
-    private List<KObject> objects;
+    private Array<KObject> objects;
 
     public KObjectContainer() {
-        this.objects = new ArrayList<>();
+        this.objects = new Array<>();
     }
 
     public <T extends KObject> T createObject(Class<T> clazz) {
@@ -23,7 +21,7 @@ public class KObjectContainer {
         }
     }
 
-    public List<KObject> getObjects() {
+    public Array<KObject> getObjects() {
         return this.objects;
     }
 
@@ -31,5 +29,21 @@ public class KObjectContainer {
         for (KObject obj : this.objects) {
             obj.destroy();
         }
+    }
+
+    public <T> Array<T> findObjectsOfClass(Class<T> clazz) {
+        Array<T> result = new Array<T>();
+
+        for (KObject obj : this.objects) {
+            if (clazz.isInstance(obj)) {
+                result.add((T) obj);
+            }
+        }
+
+        return result;
+    }
+
+    public void removeObject(KObject obj) {
+        this.objects.removeValue(obj, true);
     }
 }
